@@ -78,6 +78,7 @@ export default function sortableContainer(WrappedComponent, config = {withRef: f
       ghostParent: PropTypes.oneOfType([
         PropTypes.bool,
         PropTypes.instanceOf(Element),
+        PropTypes.func,
       ]),
       hideSortableGhost: PropTypes.bool,
       lockToContainerEdges: PropTypes.bool,
@@ -299,7 +300,7 @@ export default function sortableContainer(WrappedComponent, config = {withRef: f
           }
         });
 
-        const ghostParentElement = ghostParent || this.document.body;
+        const ghostParentElement = typeof ghostParent === 'function' ? ghostParent(this.container) : ghostParent || this.document.body;
         this.helper = ghostParentElement.appendChild(clonedNode);
 
         this.helper.style.position = 'fixed';
