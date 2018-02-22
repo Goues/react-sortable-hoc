@@ -25,12 +25,7 @@ export const vendorPrefix = (function() {
   const styles = window.getComputedStyle(document.documentElement, '') || ['-moz-hidden-iframe'];
   const pre = (Array.prototype.slice.call(styles).join('').match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o']))[1];
 
-  switch (pre) {
-    case 'ms':
-      return 'ms';
-    default:
-      return pre && pre.length ? pre[0].toUpperCase() + pre.substr(1) : '';
-  }
+  return (pre && pre.length) ? pre[0].toUpperCase() + pre.substr(1) : '';
 })();
 
 export function closest(el, fn) {
