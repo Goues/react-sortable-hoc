@@ -73,7 +73,10 @@ export default function sortableContainer(WrappedComponent, config = {withRef: f
       onSortEnd: PropTypes.func,
       shouldCancelStart: PropTypes.func,
       pressDelay: PropTypes.number,
-      useDragHandle: PropTypes.bool,
+      useDragHandle: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.string,
+      ]),
       useWindowAsScrollContainer: PropTypes.bool,
       ghostParent: PropTypes.oneOfType([
         PropTypes.bool,
@@ -170,7 +173,12 @@ export default function sortableContainer(WrappedComponent, config = {withRef: f
         const {index, collection} = node.sortableInfo;
 
         if (
-          useDragHandle && !closest(e.target, el => el.sortableHandle != null)
+          useDragHandle && !closest(e.target, el => {
+            if (el === document) {
+              return false;
+            }
+            return (useDragHandle === true && el.sortableHandle != null) || el.matches(useDragHandle);
+          })
         )
           return;
 
